@@ -14,6 +14,7 @@ import { Button } from '../button';
 import { Price } from '../product-card';
 
 import { Input } from './input';
+import { useTranslations } from 'next-intl';
 
 interface Image {
   src: string;
@@ -95,6 +96,8 @@ const Search = ({ initialTerm = '', logo, onSearch }: Props) => {
     inputRef.current?.focus();
   };
 
+  const t = useTranslations('Components.SearchForm');
+
   return (
     <SheetPrimitive.Root onOpenChange={setOpen} open={open}>
       <SheetPrimitive.Trigger asChild>
@@ -149,7 +152,7 @@ const Search = ({ initialTerm = '', logo, onSearch }: Props) => {
                       onChange={handleTermChange}
                       onClickClear={handleTermClear}
                       pending={pending}
-                      placeholder="Search..."
+                      placeholder={t('searchPlaceholder')}
                       ref={inputRef}
                       role="combobox"
                       showClear={term.length > 0}
@@ -160,10 +163,10 @@ const Search = ({ initialTerm = '', logo, onSearch }: Props) => {
               </Form.Root>
               <SheetPrimitive.Close asChild>
                 <Button
-                  aria-label="Close search popup"
+                  aria-label={t('closeSearchPopup')}
                   className="w-auto justify-self-end border-0 bg-transparent p-2.5 text-black hover:bg-transparent hover:text-primary focus-visible:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20 peer-hover:text-primary peer-focus-visible:text-primary"
                 >
-                  <small className="me-2 hidden text-base md:inline-flex">Close</small>
+                  <small className="me-2 hidden text-base md:inline-flex">{t('closeSearch')}</small>
                   <X />
                 </Button>
               </SheetPrimitive.Close>
