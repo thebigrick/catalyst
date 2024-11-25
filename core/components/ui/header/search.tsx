@@ -274,7 +274,7 @@ const Search = ({ initialTerm = '', logo, onSearch }: Props) => {
             )}
             {searchResults && searchResults.products.length === 0 && (
               <p className="p-6">
-                No products matched with <b>"{term}"</b>
+                {t('noSearchResults', { term })}
               </p>
             )}
           </SheetPrimitive.Content>
