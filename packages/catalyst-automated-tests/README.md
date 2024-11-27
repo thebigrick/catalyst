@@ -9,21 +9,25 @@ This repository provides additional end-to-end tests built with [Playwright](htt
 ### Prerequisites
 
 - Ensure you have a working Catalyst environment set up
+
 ### Installation
 
 1. Clone the repository inside `/packages/`:
+
    ```bash
    cd /path/to/catalyst
    git clone https://github.com/thebigrick/catalyst-playwright ./packages/catalyst-playwright
    ```
 
 2. Install project dependencies:
+
    ```bash
    cd /path/to/catalyst
    pnpm install
    ```
 
 3. Add BIGCOMMERCE_AUTH_TOKEN to `.env`:
+
    ```bash
    BIGCOMMERCE_AUTH_TOKEN=your-auth-token
    ```

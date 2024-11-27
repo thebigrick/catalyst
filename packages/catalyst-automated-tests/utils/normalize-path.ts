@@ -9,7 +9,7 @@ import addLocalePath from './add-locale-path';
  * @param path
  */
 const normalizePath = (page: Page, path: string): string => {
-    return collapsePath(page, addLocalePath(page, path));
-}
+  return collapsePath(page, addLocalePath(page, path));
+};
 
 export default normalizePath;

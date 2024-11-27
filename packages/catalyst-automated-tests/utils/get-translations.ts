@@ -16,10 +16,7 @@ type FlattenedMessages = {
  * @param messages
  * @param prefix
  */
-const flattenMessages = (
-  messages: NestedMessages,
-  prefix = ''
-): FlattenedMessages => {
+const flattenMessages = (messages: NestedMessages, prefix = ''): FlattenedMessages => {
   return Object.keys(messages).reduce((acc: FlattenedMessages, key: string) => {
     const value = messages[key];
     const newKey = prefix ? `${prefix}.${key}` : key;
@@ -32,7 +29,7 @@ const flattenMessages = (
 
     return acc;
   }, {});
-}
+};
 
 /**
  * Get the translation for the given key
@@ -40,12 +37,12 @@ const flattenMessages = (
  * @param namespace
  */
 const getTranslations = async (page: Page, namespace: string) => {
-  const {locale} = getContext(page);
+  const { locale } = getContext(page);
   const messages = deepmerge(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
     (await import(`@bigcommerce/catalyst-core/messages/${fallbackLocale}.json`, { assert: { type: 'json' } })).default,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
-    (await import(`@bigcommerce/catalyst-core/messages/${locale}.json`, { assert: { type: 'json' } })).default,
+    (await import(`@bigcommerce/catalyst-core/messages/${locale}.json`, { assert: { type: 'json' } })).default
   ) as NestedMessages;
 
   const flatMessages = flattenMessages(messages);
@@ -67,6 +64,6 @@ const getTranslations = async (page: Page, namespace: string) => {
 
     return translation;
   };
-}
+};
 
 export default getTranslations;

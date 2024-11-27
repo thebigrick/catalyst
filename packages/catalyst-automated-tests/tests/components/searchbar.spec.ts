@@ -2,6 +2,7 @@ import { test, expect, Page } from '@playwright/test';
 import getTranslations from '../../utils/get-translations';
 import getNavCategories from '../../utils/remote/get-nav-categories';
 import searchProducts from '../../utils/remote/search-products';
+import getBrands from '../../utils/remote/get-brands';
 
 test.describe.configure({ mode: 'parallel' });
 
@@ -12,7 +13,7 @@ test.beforeEach(async ({ page }) => {
 const openSearchPopup = async (page: Page) => {
   const t = await getTranslations(page, 'Components.SearchForm');
   await page.getByRole('button', { name: t('openSearchPopup'), exact: true }).click();
-}
+};
 
 test.describe('Searchbar closed', () => {
   test('should be closed at page load', async ({ page }) => {
@@ -28,7 +29,7 @@ test.describe('Searchbar closed', () => {
 test.describe('Searchbar open', () => {
   test.beforeEach(async ({ page }) => {
     await openSearchPopup(page);
-  })
+  });
 
   test('should close the search popup', async ({ page }) => {
     const t = await getTranslations(page, 'Components.SearchForm');
@@ -78,10 +79,12 @@ test.describe('Searchbar open', () => {
     for (const product of products) {
       await page.getByPlaceholder('Search').type(product.name);
 
-      const searchPopup = await page.getByRole('dialog');
-      const productLink = await searchPopup
-        .getByRole('link', { name: product.name })
-        .filter(`[href="${product.path}"]`);
+      const productsListSection = page
+        .getByRole('dialog')
+        .locator('section') // TODO: Use getByRole with a title
+        .filter({ hasText: 'Products' });
+
+      const productLink = productsListSection.getByRole('link', { name: product.name });
 
       await expect(productLink).toBeVisible();
       await page.getByRole('button', { name: t('clearSearch') }).click();
@@ -92,24 +95,50 @@ test.describe('Searchbar open', () => {
     const t = await getTranslations(page, 'Components.SearchForm');
 
     const navCategories = await getNavCategories(page);
-    const nonEmptyCategories = navCategories.filter((category) => category.productCount > 0);
+    const nonEmptyCategories = navCategories.filter((category) => category.productCount > 0).splice(0, 5);
 
     for (const nonEmptyCategory of nonEmptyCategories) {
       const products = await searchProducts(page, { categoryEntityId: nonEmptyCategory.entityId });
+      const productOfCategory = products[0];
 
-      const firstProduct = products[0];
-      const productCategories = firstProduct.categories.edges.map(({ node }) => node);
+      const productCategories = productOfCategory.categories.edges.map(({ node }) => node);
 
-      await page.getByPlaceholder('Search').type(firstProduct.name);
+      await page.getByPlaceholder('Search').type(productOfCategory.name);
 
-      const searchPopup = await page.getByRole('dialog');
+      const categoriesSection = page
+        .getByRole('dialog')
+        .locator('section') // TODO: Use getByRole with a title
+        .filter({ hasText: 'Categories' });
+
       for (const productCategory of productCategories) {
-        const categoryLink = await searchPopup
-          .getByRole('link', { name: productCategory.name, exact: true })
-          .filter(`[href="${productCategory.path}"]`);
+        const categoryLink = categoriesSection.getByRole('link', { name: productCategory.name, exact: true });
 
         await expect(categoryLink).toBeVisible();
       }
+
+      await page.getByRole('button', { name: t('clearSearch') }).click();
+    }
+  });
+
+  test('should display all the brands of a product', async ({ page }) => {
+    const t = await getTranslations(page, 'Components.SearchForm');
+
+    const nonEmptyBrands = (await getBrands(page)).filter((brand) => brand.products.edges.length > 0).splice(0, 5);
+    for (const nonEmptyBrand of nonEmptyBrands) {
+      const products = await searchProducts(page, { brandEntityIds: [nonEmptyBrand.entityId] });
+      const product = products[0];
+
+      await page.getByPlaceholder('Search').type(product.name);
+
+      const brandsSection = page
+        .getByRole('dialog')
+        .locator('section') // TODO: Use getByRole with a title
+        .filter({ hasText: 'Brands' });
+
+      const productBrand = product.brand;
+
+      const brandLink = brandsSection.getByRole('link', { name: productBrand.name, exact: true });
+      await expect(brandLink).toBeVisible();
 
       await page.getByRole('button', { name: t('clearSearch') }).click();
     }

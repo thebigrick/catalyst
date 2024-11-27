@@ -7,13 +7,13 @@ import getContext from './get-context';
  * @param path
  */
 const collapsePath = (page: Page, path: string): string => {
-    const ctx = getContext(page);
+  const ctx = getContext(page);
 
-    if (ctx.channelId === '1') {
-        return path.replace(`/${ctx.locale}/`, '/');
-    }
+  if (ctx.channelId === '1') {
+    return path.replace(`/${ctx.locale}/`, '/');
+  }
 
-    return path;
-}
+  return path;
+};
 
 export default collapsePath;

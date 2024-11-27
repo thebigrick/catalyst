@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "playwright test --ui"
+    "dev": "playwright test --ui",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "Riccardo Tempesta",

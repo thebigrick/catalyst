@@ -19,6 +19,6 @@ const getClient = async (page: Page) => {
   }
 
   return clients[ctx.channelId];
-}
+};
 
 export default getClient;

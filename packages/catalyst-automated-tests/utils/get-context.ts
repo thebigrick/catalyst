@@ -27,6 +27,6 @@ const getContext = (page: Page): ITestContext => {
     locale: defaultLocale,
     channelId: defaultChannelId,
   };
-}
+};
 
 export default getContext;

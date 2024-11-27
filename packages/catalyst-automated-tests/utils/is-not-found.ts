@@ -10,6 +10,6 @@ const isNotFound = async (page: Page): Promise<boolean> => {
 
   const locator = page.getByText(t('heading'));
   return await locator.isVisible().catch(() => false);
-}
+};
 
 export default isNotFound;
