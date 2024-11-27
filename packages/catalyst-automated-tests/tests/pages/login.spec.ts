@@ -4,6 +4,7 @@ import normalizePath from '../../utils/normalize-path';
 import createCustomer from '../../utils/remote/create-customer';
 import deleteCustomer from '../../utils/remote/delete-customer';
 import getCustomer from '../../utils/remote/get-customer';
+import { faker } from '@faker-js/faker';
 
 test.describe.configure({ mode: 'parallel' });
 
@@ -41,20 +42,12 @@ test.describe('Login', () => {
   });
 
   test.describe('Customer registration and login', () => {
-    let testUserEmail = '';
-    let testUserPassword = '';
-    let testUserFirstName = '';
-    let testUserLastName = '';
+    const testUserEmail = faker.internet.email({ provider: 'test.bigcommerce.com' });
+    const testUserPassword = faker.internet.password({ pattern: /[a-zA-Z0-9]/, prefix: 'A1', length: 10 });
+    const testUserFirstName = faker.person.firstName();
+    const testUserLastName = faker.person.lastName();
 
     test.beforeEach(async () => {
-      const randomString = Math.random().toString(36).substring(6);
-
-      // Use a random email to avoid conflicts with existing customers and avoid triggering security measures
-      testUserEmail = `cypress.test.${randomString}@test-${randomString}.com`;
-      testUserPassword = `password-${randomString}`;
-      testUserFirstName = 'Cypress Test';
-      testUserLastName = 'Test';
-
       await createCustomer({
         email: testUserEmail,
         first_name: testUserFirstName,
@@ -73,7 +66,7 @@ test.describe('Login', () => {
 
     test('should login with valid credentials', async ({ page }) => {
       const t = await getTranslations(page, 'Login.Form');
-      const accountT = await getTranslations(page, 'Account.Home');
+      const aht = await getTranslations(page, 'Account.Home');
 
       await page.getByLabel(t('emailLabel')).fill(testUserEmail);
       await page.getByLabel(t('passwordLabel')).fill(testUserPassword);
@@ -83,7 +76,7 @@ test.describe('Login', () => {
 
       expect(page.waitForURL(normalizePath(page, '/account/')));
 
-      await expect(page.getByRole('heading', { name: accountT('heading') })).toBeVisible();
+      await expect(page.getByRole('heading', { name: aht('heading') })).toBeVisible();
     });
 
     test('should fail with invalid credentials', async ({ page }) => {
