@@ -3,8 +3,10 @@
 import { ShoppingCart } from 'lucide-react';
 import React from 'react';
 
-import useCartIcon, { CartIconProps } from '~/components/header/_hooks/use-cart-icon';
+import useCartIcon, { UseCartIconProps } from '~/components/header/_hooks/use-cart-icon';
 import { Badge } from '~/components/ui/badge';
+
+export interface CartIconProps extends UseCartIconProps {}
 
 const CartIcon: React.FC<CartIconProps> = (props) => {
   const {

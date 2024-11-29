@@ -12,6 +12,13 @@ const inputSlots = tv({
       'pointer-events-none absolute end-3 top-0 flex h-full items-center text-primary peer-disabled:text-gray-200',
     loadingSpinner: 'animate-spin',
   },
+  variants: {
+    style: {
+      alternate: {
+        base: 'bg-black text-white',
+      },
+    },
+  },
 });
 
 export type InputSlots = keyof ReturnType<typeof inputSlots>;

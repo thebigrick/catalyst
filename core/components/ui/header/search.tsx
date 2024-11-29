@@ -146,6 +146,9 @@ const Search = ({ initialTerm = '', logo, onSearch }: Props) => {
                     <Input
                       aria-controls="categories products brands"
                       aria-expanded={!!searchResults}
+                      classNames={{
+                        base: 'border-4',
+                      }}
                       onChange={handleTermChange}
                       onClickClear={handleTermClear}
                       pending={pending}

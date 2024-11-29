@@ -9,11 +9,13 @@ const CartQuantityResponseSchema = z.object({
   count: z.number(),
 });
 
-export interface CartIconProps {
+export interface UseCartIconProps {
   count?: number;
 }
 
-const useCartIcon: ComponentHook<CartIconProps, { count: number }> = ({ count: serverCount }) => {
+const useCartIcon: ComponentHook<UseCartIconProps, { count: number }> = ({
+  count: serverCount,
+}) => {
   const { count, setCount } = useCart();
   const locale = useLocale();
 

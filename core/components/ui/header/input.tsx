@@ -4,7 +4,7 @@ import { Loader2 as Spinner, Search, X } from 'lucide-react';
 import { ComponentPropsWithRef, ElementRef, forwardRef } from 'react';
 
 import inputSlots, { InputSlots } from '~/components/ui/header/_styles/input-slots';
-import { getSlots, SlotsToClasses } from '~/tv/slots';
+import { SlotsToClasses, useSlots } from '~/tv/slots';
 
 import { Button } from '../button';
 
@@ -18,7 +18,7 @@ interface Props extends ComponentPropsWithRef<'input'> {
 
 export const Input = forwardRef<ElementRef<'input'>, Props>(
   ({ className, pending, showClear, onClickClear, classNames, ...props }, ref) => {
-    const slots = getSlots(inputSlots, classNames);
+    const slots = useSlots(inputSlots, classNames, { style: 'alternate' });
 
     return (
       <div className={slots.wrapper()}>
