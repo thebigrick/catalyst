@@ -38,7 +38,10 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"]
+      "~/*": [
+        "../packages/catalyst-pluginizr/generated/@bigcommerce/catalyst-core/*",
+        "./*"
+      ]
     },
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
   },

@@ -21,6 +21,7 @@
     "resolveJsonModule": true,
     "paths": {
       "@bigcommerce/catalyst-core/*": [
+        "../packages/catalyst-pluginizr/generated/@bigcommerce/catalyst-core/*",
         "../../../core/*"
       ],
       "@thebigrick/catalyst-pluginizr/*": [
