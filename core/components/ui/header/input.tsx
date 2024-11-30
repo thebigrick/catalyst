@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader2 as Spinner, Search, X } from 'lucide-react';
+import { Loader2, Search, X } from 'lucide-react';
 import { ComponentPropsWithRef, ElementRef, forwardRef } from 'react';
 
 import inputSlots, { InputSlots } from '~/components/ui/header/_styles/input-slots';
@@ -14,35 +14,36 @@ interface Props extends ComponentPropsWithRef<'input'> {
   onClickClear?: () => void;
   showClear?: boolean;
   classNames?: SlotsToClasses<InputSlots>;
+  variant?: 'alternate';
 }
 
-export const Input = forwardRef<ElementRef<'input'>, Props>(
-  ({ className, pending, showClear, onClickClear, classNames, ...props }, ref) => {
-    const slots = useSlots(inputSlots, classNames, { style: 'alternate' });
+export const Input = forwardRef<ElementRef<'input'>, Props>((props, ref) => {
+  const { className, pending, showClear, onClickClear, classNames, ...otherProps } = props;
 
-    return (
-      <div className={slots.wrapper()}>
-        <input className={slots.base()} ref={ref} type="text" {...props} />
-        <span aria-hidden="true" className={slots.searchIcon()}>
-          <Search />
+  const slots = useSlots(inputSlots, classNames, props);
+
+  return (
+    <div className={slots.wrapper()}>
+      <input className={slots.base()} ref={ref} type="text" {...otherProps} />
+      <span aria-hidden="true" className={slots.searchIcon()}>
+        <Search />
+      </span>
+      {showClear && !pending && (
+        <Button
+          aria-label="Clear search"
+          className={slots.clearButton()}
+          onClick={onClickClear}
+          type="button"
+        >
+          <X />
+        </Button>
+      )}
+      {pending && (
+        <span aria-hidden="true" className={slots.loadingWrapper()}>
+          <Loader2 aria-hidden="true" className={slots.loadingSpinner()} />
+          <span className="sr-only">Processing...</span>
         </span>
-        {showClear && !pending && (
-          <Button
-            aria-label="Clear search"
-            className={slots.clearButton()}
-            onClick={onClickClear}
-            type="button"
-          >
-            <X />
-          </Button>
-        )}
-        {pending && (
-          <span aria-hidden="true" className={slots.loadingWrapper()}>
-            <Spinner aria-hidden="true" className={slots.loadingSpinner()} />
-            <span className="sr-only">Processing...</span>
-          </span>
-        )}
-      </div>
-    );
-  },
-);
+      )}
+    </div>
+  );
+});

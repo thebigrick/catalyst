@@ -146,9 +146,9 @@ const Search = ({ initialTerm = '', logo, onSearch }: Props) => {
                     <Input
                       aria-controls="categories products brands"
                       aria-expanded={!!searchResults}
-                      classNames={{
-                        base: 'border-4',
-                      }}
+                      // classNames={{
+                      //   base: 'border-4',
+                      // }}
                       onChange={handleTermChange}
                       onClickClear={handleTermClear}
                       pending={pending}
@@ -157,6 +157,7 @@ const Search = ({ initialTerm = '', logo, onSearch }: Props) => {
                       role="combobox"
                       showClear={term.length > 0}
                       value={term}
+                      // variant="alternate"
                     />
                   </Form.Control>
                 </Form.Field>

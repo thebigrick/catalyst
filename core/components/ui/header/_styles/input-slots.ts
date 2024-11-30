@@ -13,7 +13,12 @@ const inputSlots = tv({
     loadingSpinner: 'animate-spin',
   },
   variants: {
-    style: {
+    pending: {
+      true: {
+        base: 'bg-red-300 text-white animate-pulse',
+      },
+    },
+    variant: {
       alternate: {
         base: 'bg-black text-white',
       },
