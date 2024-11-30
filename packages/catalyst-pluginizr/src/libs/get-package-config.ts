@@ -26,6 +26,7 @@ const getPackageConfig = (packagePath: string): CatalystPackageConfig => {
     packageJsonPath: packageJsonPath,
     path: packagePath,
     srcPath: path.join(packagePath, baseUrl),
+    baseUrl,
   };
 };
 

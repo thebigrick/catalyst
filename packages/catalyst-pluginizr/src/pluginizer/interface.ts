@@ -27,6 +27,7 @@ export interface CatalystPackageConfig {
   packageJsonPath: string;
   path: string;
   srcPath: string;
+  baseUrl: string;
 }
 
 export interface CatalystPluginConfig extends CatalystPackageConfig {}
