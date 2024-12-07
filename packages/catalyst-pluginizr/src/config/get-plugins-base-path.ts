@@ -5,7 +5,7 @@ import path from 'node:path';
  * @returns {string}
  */
 const getPluginsBasePath = (): string => {
-  return path.join(__dirname, "../../../..", "plugins").replace(/\\/g, "/");
+  return path.join(__dirname, '../../../..', 'plugins').replace(/\\/g, '/');
 };
 
 export default getPluginsBasePath;

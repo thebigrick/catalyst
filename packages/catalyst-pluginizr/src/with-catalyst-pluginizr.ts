@@ -1,7 +1,7 @@
 import { NextConfig } from 'next';
 import { WebpackConfigContext } from 'next/dist/server/config-shared';
 
-import getPluginPathMap from './get-plugin-path-map';
+import getPluginsConfig from './config/get-plugins-config';
 
 /**
  * Enhance the Next.js configuration with Catalyst plugins support
@@ -10,7 +10,14 @@ import getPluginPathMap from './get-plugin-path-map';
  */
 const withCatalystPluginizr = (nextConfig: NextConfig): NextConfig => {
   const basePath = nextConfig.basePath || '';
-  const mapping = getPluginPathMap(basePath);
+  const pluginsConfig = getPluginsConfig(basePath);
+
+  const mapping = Object.values(pluginsConfig).reduce((acc, pluginConfig) => {
+    return {
+      ...acc,
+      [pluginConfig.packageName]: pluginConfig.srcPath,
+    };
+  }, {});
 
   return {
     ...nextConfig,

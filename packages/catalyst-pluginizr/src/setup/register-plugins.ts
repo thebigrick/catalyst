@@ -2,9 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import getPackageBaseUrl from '../config/get-package-base-url';
-import getPackageName from '../config/get-package-name';
+import getPluginsConfig from '../config/get-plugins-config';
 import getSelfRoot from '../config/get-self-root';
-import getPluginPathMap from '../get-plugin-path-map';
 
 const selfRegisterFile = 'plugins.ts';
 
@@ -14,17 +13,16 @@ const selfRegisterFile = 'plugins.ts';
  */
 const registerPlugins = (): void => {
   const selfRoot = getSelfRoot();
-  const pluginPaths = Object.values(getPluginPathMap(selfRoot));
+  const pluginsConfig = Object.values(getPluginsConfig(selfRoot));
 
   const getSelfBaseUrl = getPackageBaseUrl(getSelfRoot());
   const selfRegisterFilePath = path.join(getSelfRoot(), getSelfBaseUrl, selfRegisterFile);
 
-  const importStatements = pluginPaths
-    .map((pluginBasePath) => {
-      const packageName = getPackageName(pluginBasePath);
-      const baseUrl = getPackageBaseUrl(pluginBasePath);
+  const importStatements = pluginsConfig
+    .map((pluginConfig) => {
+      const { packageName, srcPath } = pluginConfig;
 
-      const pluginRegisterFile = path.join(pluginBasePath, baseUrl, 'register-plugins.ts');
+      const pluginRegisterFile = path.join(srcPath, 'register-plugins.ts');
 
       if (!fs.existsSync(pluginRegisterFile)) {
         return null;
