@@ -2,6 +2,12 @@ import React from 'react';
 
 import { getPlugins } from './registry';
 
+/**
+ * Higher-order component that wraps a component with plugins.
+ * @param {string} component
+ * @param {React.ComponentType} WrappedComponent
+ * @returns {React.ComponentType}
+ */
 export function withPlugins<P extends object>(
   component: string,
   WrappedComponent: React.ComponentType<P>,

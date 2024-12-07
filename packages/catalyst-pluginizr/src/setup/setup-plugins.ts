@@ -1,3 +1,4 @@
+import registerPlugins from './register-plugins';
 import updateTsConfig from './update-ts-config';
 
 /**
@@ -6,6 +7,7 @@ import updateTsConfig from './update-ts-config';
  */
 const setupPlugins = (): void => {
   updateTsConfig();
+  registerPlugins();
 };
 
 export default setupPlugins;

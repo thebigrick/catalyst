@@ -4,7 +4,7 @@ import { WebpackConfigContext } from 'next/dist/server/config-shared';
 import getPluginPathMap from './get-plugin-path-map';
 
 /**
- * Adds the plugin path map to the webpack config aliases
+ * Enhance the Next.js configuration with Catalyst plugins support
  * @param {NextConfig} nextConfig
  * @returns {NextConfig}
  */

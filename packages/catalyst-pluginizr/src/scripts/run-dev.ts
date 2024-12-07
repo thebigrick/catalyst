@@ -1,11 +1,11 @@
-import { watch } from "chokidar";
-import path from "node:path";
+import { watch } from 'chokidar';
+import path from 'node:path';
 
-import getPluginsBasePath from "../config/get-plugins-base-path";
-import setupPlugins from "../setup/setup-plugins";
-import updateTsConfig from "../setup/update-ts-config";
+import getPluginsBasePath from '../config/get-plugins-base-path';
+import setupPlugins from '../setup/setup-plugins';
+import updateTsConfig from '../setup/update-ts-config';
 
-const watchFiles = ["package.json", "tsconfig.json"];
+const watchFiles = ['package.json', 'tsconfig.json'];
 
 /**
  * Run the development environment
@@ -17,7 +17,7 @@ const runDev = (): void => {
   const targetFolder = getPluginsBasePath();
   const watchPatterns = [
     targetFolder,
-    ...watchFiles.map((file) => path.join(targetFolder, "**", file)),
+    ...watchFiles.map((file) => path.join(targetFolder, '**', file)),
   ];
 
   const watcher = watch(watchPatterns, {
@@ -30,21 +30,21 @@ const runDev = (): void => {
   });
 
   watcher
-    .on("add", (file: string) => {
+    .on('add', (file: string) => {
       const fileName = path.basename(file);
 
       if (watchFiles.includes(fileName)) {
         updateTsConfig();
       }
     })
-    .on("change", (file: string) => {
+    .on('change', (file: string) => {
       const fileName = path.basename(file);
 
       if (watchFiles.includes(fileName)) {
         updateTsConfig();
       }
     })
-    .on("unlink", (file: string) => {
+    .on('unlink', (file: string) => {
       const fileName = path.basename(file);
 
       if (watchFiles.includes(fileName)) {
@@ -52,7 +52,7 @@ const runDev = (): void => {
       }
     });
 
-  process.on("SIGINT", () => {
+  process.on('SIGINT', () => {
     watcher
       .close()
       .then(() => {

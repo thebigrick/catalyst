@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
+    "setup": "npx tsx src/scripts/setup.ts",
     "dev": "npx tsx src/scripts/run-dev.ts",
     "typecheck": "tsc --noEmit"
   },

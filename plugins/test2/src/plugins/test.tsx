@@ -1,7 +1,7 @@
-import { Plugin, register } from "@thebigrick/catalyst-pluginizr";
+import { Plugin } from "@thebigrick/catalyst-pluginizr";
 import React from "react";
 
-const myPlugin: Plugin = {
+const myTestPlugin: Plugin = {
   name: "My Plugin",
   component: "header",
   wrap: (Component) => (props) => {
@@ -14,4 +14,4 @@ const myPlugin: Plugin = {
   },
 };
 
-register(myPlugin);
+export default myTestPlugin;
