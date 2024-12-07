@@ -19,15 +19,7 @@
     "strict": true,
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
     "resolveJsonModule": true,
-    "jsx": "react",
-    "paths": {
-      "@test/test2/*": [
-        "../../../plugins/test2/src/*"
-      ],
-      "@test/test3/*": [
-        "../../../plugins/test3/src/*"
-      ]
-    }
+    "jsx": "react"
   },
   "exclude": [
     "node_modules"

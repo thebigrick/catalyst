@@ -7,8 +7,8 @@ const myTestPlugin: Plugin = {
   wrap: (Component) => (props) => {
     return (
       <div className="plugin-wrapper">
+        PLUGIN test 3
         <Component {...props} />
-        PLUGIN test 2
       </div>
     );
   },

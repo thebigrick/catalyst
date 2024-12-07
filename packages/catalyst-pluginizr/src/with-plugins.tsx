@@ -8,10 +8,10 @@ import { getPlugins } from './registry';
  * @param {React.ComponentType} WrappedComponent
  * @returns {React.ComponentType}
  */
-export function withPlugins<P extends object>(
+const withPlugins = <P extends object>(
   component: string,
   WrappedComponent: React.ComponentType<P>,
-): React.ComponentType<P> {
+): React.ComponentType<P> => {
   const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
   const WithPlugins: React.FC<P> = (props) => {
@@ -27,4 +27,6 @@ export function withPlugins<P extends object>(
   WithPlugins.displayName = `WithPlugins(${displayName})`;
 
   return WithPlugins;
-}
+};
+
+export default withPlugins;
