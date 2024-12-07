@@ -1,7 +1,6 @@
 {
   "name": "@test/test2",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,10 +9,12 @@
   "description": "",
   "dependencies": {
     "@thebigrick/catalyst-pluginizr": "workspace:*",
-    "@bigcommerce/catalyst-core": "workspace:*"
+    "@bigcommerce/catalyst-core": "workspace:*",
+    "react": "^18.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.17.6",
+    "@types/react": "^18.3.12",
     "typescript": "^5.6.3"
   }
 }

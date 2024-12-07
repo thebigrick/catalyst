@@ -1,3 +1,4 @@
+import { withPlugins } from '@thebigrick/catalyst-pluginizr';
 import { ShoppingCart, User } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { ReactNode, Suspense } from 'react';
@@ -24,7 +25,7 @@ interface Props {
   cart: ReactNode;
 }
 
-export const Header = async ({ cart }: Props) => {
+export const Header = withPlugins('header', async ({ cart }: Props) => {
   const locale = await getLocale();
   const t = await getTranslations('Components.Header');
   const customerAccessToken = await getSessionCustomerAccessToken();
@@ -104,7 +105,7 @@ export const Header = async ({ cart }: Props) => {
       search={<QuickSearch logo={data.settings ? logoTransformer(data.settings) : ''} />}
     />
   );
-};
+});
 
 export const HeaderSkeleton = () => (
   <header className="flex min-h-[92px] animate-pulse items-center justify-between gap-1 overflow-y-visible bg-white px-4 2xl:container sm:px-10 lg:gap-8 lg:px-12 2xl:mx-auto 2xl:px-0">

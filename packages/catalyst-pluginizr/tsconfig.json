@@ -18,7 +18,13 @@
     "skipLibCheck": true,
     "strict": true,
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "jsx": "react",
+    "paths": {
+      "@test/test2": [
+        "../../../plugins/test2/src"
+      ]
+    }
   },
   "exclude": [
     "node_modules"

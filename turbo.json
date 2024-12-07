@@ -13,7 +13,9 @@
       ]
     },
     "build": {
-      "env": ["*"],
+      "env": [
+        "*"
+      ],
       "dependsOn": [
         "^build"
       ],
@@ -23,14 +25,26 @@
         "!.next/cache/**"
       ]
     },
+    "start": {
+      "env": [
+        "*"
+      ],
+      "dependsOn": [
+        "^build"
+      ]
+    },
     "lint": {
-      "env": ["*"],
+      "env": [
+        "*"
+      ],
       "dependsOn": [
         "^build"
       ]
     },
     "typecheck": {
-      "env": ["*"],
+      "env": [
+        "*"
+      ],
       "dependsOn": [
         "topo"
       ],
@@ -39,7 +53,9 @@
       ]
     },
     "dev": {
-      "env": ["*"],
+      "env": [
+        "*"
+      ],
       "cache": false,
       "persistent": true
     }

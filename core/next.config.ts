@@ -6,6 +6,7 @@ import { writeBuildConfig } from './build-config/writer';
 import { client } from './client';
 import { graphql } from './client/graphql';
 import { cspHeader } from './lib/content-security-policy';
+import withCatalystPluginizr from '@thebigrick/catalyst-pluginizr/with-catalyst-pluginizr';
 
 const withNextIntl = createNextIntlPlugin();
 
@@ -59,6 +60,7 @@ export default async (): Promise<NextConfig> => {
 
   // Apply withNextIntl to the config
   nextConfig = withNextIntl(nextConfig);
+  nextConfig = withCatalystPluginizr(nextConfig);
 
   if (process.env.ANALYZE === 'true') {
     const withBundleAnalyzer = bundleAnalyzer();
