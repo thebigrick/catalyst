@@ -19,8 +19,11 @@ const withCatalystPluginizr = (nextConfig: NextConfig): NextConfig => {
     };
   }, {});
 
+  const pluginPackages = Object.keys(pluginsConfig);
+
   return {
     ...nextConfig,
+    transpilePackages: [...(nextConfig.transpilePackages || []), ...pluginPackages],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     webpack: (config: any, context: WebpackConfigContext) => {
       if (typeof nextConfig.webpack === 'function') {

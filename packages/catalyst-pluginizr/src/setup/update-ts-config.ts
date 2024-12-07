@@ -23,7 +23,11 @@ const updateTsConfig = (): void => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   selfTsConfig.compilerOptions.paths = Object.keys(pluginsConfig).reduce<Record<string, string[]>>(
     (acc, key) => {
-      acc[key] = [path.relative(selfBaseUrlPath, pluginsConfig[key].srcPath).replace(/\\/g, '/')];
+      const relativePath = path
+        .relative(selfBaseUrlPath, pluginsConfig[key].srcPath)
+        .replace(/\\/g, '/');
+
+      acc[`${key}/*`] = [`${relativePath}/*`];
 
       return acc;
     },

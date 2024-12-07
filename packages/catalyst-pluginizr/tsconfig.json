@@ -21,8 +21,8 @@
     "resolveJsonModule": true,
     "jsx": "react",
     "paths": {
-      "@test/test2": [
-        "../../../plugins/test2/src"
+      "@test/test2/*": [
+        "../../../plugins/test2/src/*"
       ]
     }
   },

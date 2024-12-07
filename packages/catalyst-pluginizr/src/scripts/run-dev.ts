@@ -3,9 +3,8 @@ import path from 'node:path';
 
 import getPluginsBasePath from '../config/get-plugins-base-path';
 import setupPlugins from '../setup/setup-plugins';
-import updateTsConfig from '../setup/update-ts-config';
 
-const watchFiles = ['package.json', 'tsconfig.json'];
+const watchFiles = ['package.json', 'tsconfig.json', 'register-plugins.ts'];
 
 /**
  * Run the development environment
@@ -22,7 +21,8 @@ const runDev = (): void => {
 
   const watcher = watch(watchPatterns, {
     persistent: true,
-    ignoreInitial: false,
+    ignoreInitial: true,
+    ignored: /node_modules/,
     awaitWriteFinish: {
       stabilityThreshold: 2000,
       pollInterval: 100,
@@ -34,21 +34,21 @@ const runDev = (): void => {
       const fileName = path.basename(file);
 
       if (watchFiles.includes(fileName)) {
-        updateTsConfig();
+        setupPlugins();
       }
     })
     .on('change', (file: string) => {
       const fileName = path.basename(file);
 
       if (watchFiles.includes(fileName)) {
-        updateTsConfig();
+        setupPlugins();
       }
     })
     .on('unlink', (file: string) => {
       const fileName = path.basename(file);
 
       if (watchFiles.includes(fileName)) {
-        updateTsConfig();
+        setupPlugins();
       }
     });
 

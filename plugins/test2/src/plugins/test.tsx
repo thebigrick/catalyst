@@ -7,7 +7,7 @@ const myTestPlugin: Plugin = {
   wrap: (Component) => (props) => {
     return (
       <div className="plugin-wrapper">
-        CIAONE2
+        CIAONE23
         <Component {...props} />
       </div>
     );

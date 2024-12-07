@@ -28,7 +28,7 @@ const registerPlugins = (): void => {
         return null;
       }
 
-      return `import '${packageName}/register-plugins.ts';`;
+      return `import '${packageName}/register-plugins';`;
     })
     .filter((importStatement) => importStatement !== null);
 

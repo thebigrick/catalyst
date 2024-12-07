@@ -1,1 +1,1 @@
-import "@test/test2/plugins/test";
+import '@test/test2/register-plugins';
