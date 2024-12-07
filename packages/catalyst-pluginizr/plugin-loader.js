@@ -12,6 +12,10 @@ const t = require('@babel/types');
 const fs = require('node:fs');
 const path = require('node:path');
 
+const findUpDirectoriesCache = [];
+const packagesNameCache = {};
+const tsConfigBaseUrlCache = {};
+
 /**
  * Determines if a function node represents a React component by checking for JSX elements
  * @param {Object} funcNode - The function node to analyze
@@ -45,10 +49,21 @@ const isReactComponentFunction = (funcNode) => {
 const findUp = (filename, startDir) => {
   let dir = startDir;
 
+  const candidatePath = findUpDirectoriesCache.find((entry) => startDir.startsWith(entry.dir));
+
+  if (candidatePath) {
+    return path.join(candidatePath, filename);
+  }
+
   while (dir !== path.parse(dir).root) {
     const candidate = path.join(dir, filename);
 
-    if (fs.existsSync(candidate)) return candidate;
+    if (fs.existsSync(candidate)) {
+      findUpDirectoriesCache.push(dir);
+
+      return candidate;
+    }
+
     dir = path.dirname(dir);
   }
 
@@ -61,9 +76,13 @@ const findUp = (filename, startDir) => {
  * @returns {string} Package name or 'unknown-package' if not found
  */
 const getPackageName = (packageJsonPath) => {
-  const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+  if (!packagesNameCache[packageJsonPath]) {
+    const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 
-  return pkg.name || 'unknown-package';
+    packagesNameCache[packageJsonPath] = pkg.name || 'unknown-package';
+  }
+
+  return packagesNameCache[packageJsonPath];
 };
 
 /**
@@ -74,9 +93,13 @@ const getPackageName = (packageJsonPath) => {
 const getBaseUrl = (tsconfigPath) => {
   if (!tsconfigPath) return null;
 
-  const tsconfig = JSON.parse(fs.readFileSync(tsconfigPath, 'utf8'));
+  if (!tsConfigBaseUrlCache[tsconfigPath]) {
+    const tsconfig = JSON.parse(fs.readFileSync(tsconfigPath, 'utf8'));
 
-  return tsconfig.compilerOptions?.baseUrl || null;
+    tsConfigBaseUrlCache[tsconfigPath] = tsconfig.compilerOptions?.baseUrl || null;
+  }
+
+  return tsConfigBaseUrlCache[tsconfigPath];
 };
 
 /**
