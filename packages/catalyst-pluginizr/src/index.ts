@@ -1,5 +1,5 @@
-export { default as withPlugins } from './with-plugins';
-export { register, getPlugins } from './registry';
-export type { Plugin } from './types';
+export { withPluginsFC, withPluginsFn } from './with-plugins';
+export { registerFcPlugin, getFcPlugins } from './registry';
+export type { PluginFC } from './types';
 
 import './plugins';

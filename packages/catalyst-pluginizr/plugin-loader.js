@@ -1,7 +1,6 @@
 /**
- * @fileoverview A webpack loader that wraps React components with a plugin system.
- * This loader automatically detects React components and wraps them with the withPlugins HOC
- * from @thebigrick/catalyst-pluginizr.
+ * @fileoverview A webpack loader that wraps React components and functions with appropriate plugin systems.
+ * React components are wrapped with withPluginsFC while other functions use withPluginsFn.
  * @module @thebigrick/catalyst-pluginizr
  */
 
@@ -187,7 +186,7 @@ const normalizeFunctionBody = (funcNode) => {
 };
 
 /**
- * Wraps a function with plugins
+ * Wraps a function with appropriate plugin wrapper based on whether it's a React component
  * @param {Object} funcNode - Function node to wrap
  * @param {string} identifierName - Function identifier name
  * @param {string} filename - File name
@@ -196,12 +195,14 @@ const normalizeFunctionBody = (funcNode) => {
  */
 const wrapFunctionWithPlugins = (funcNode, identifierName, filename, isDefaultExport = false) => {
   const cloned = t.cloneNode(funcNode, true);
+  const isReactComponent = isReactComponentFunction(funcNode);
 
   normalizeFunctionBody(cloned);
 
   const componentCode = getComponentCode(filename, identifierName, isDefaultExport);
+  const wrapperName = isReactComponent ? 'withPluginsFC' : 'withPluginsFn';
 
-  return t.callExpression(t.identifier('withPlugins'), [
+  return t.callExpression(t.identifier(wrapperName), [
     t.stringLiteral(componentCode),
     t.functionExpression(
       t.identifier(identifierName),
@@ -225,28 +226,38 @@ const wrapExportedFunctions = (code, filename) => {
     plugins: ['jsx', 'typescript'],
   });
 
-  let withPluginsImported = false;
+  let withPluginsFCImported = false;
+  let withPluginsFnImported = false;
 
   traverse(ast, {
     ImportDeclaration: (declPath) => {
       if (declPath.node.source.value === '@thebigrick/catalyst-pluginizr') {
-        if (
-          declPath.node.specifiers.some(
-            (spec) => t.isImportSpecifier(spec) && spec.imported.name === 'withPlugins',
-          )
-        ) {
-          withPluginsImported = true;
-        }
+        declPath.node.specifiers.forEach((spec) => {
+          if (t.isImportSpecifier(spec)) {
+            if (spec.imported.name === 'withPluginsFC') withPluginsFCImported = true;
+            if (spec.imported.name === 'withPluginsFn') withPluginsFnImported = true;
+          }
+        });
       }
     },
   });
 
-  if (!withPluginsImported) {
+  // Add necessary imports
+  const importSpecifiers = [];
+  if (!withPluginsFCImported) {
+    importSpecifiers.push(
+      t.importSpecifier(t.identifier('withPluginsFC'), t.identifier('withPluginsFC')),
+    );
+  }
+  if (!withPluginsFnImported) {
+    importSpecifiers.push(
+      t.importSpecifier(t.identifier('withPluginsFn'), t.identifier('withPluginsFn')),
+    );
+  }
+
+  if (importSpecifiers.length > 0) {
     ast.program.body.unshift(
-      t.importDeclaration(
-        [t.importSpecifier(t.identifier('withPlugins'), t.identifier('withPlugins'))],
-        t.stringLiteral('@thebigrick/catalyst-pluginizr'),
-      ),
+      t.importDeclaration(importSpecifiers, t.stringLiteral('@thebigrick/catalyst-pluginizr')),
     );
   }
 
@@ -262,10 +273,8 @@ const wrapExportedFunctions = (code, filename) => {
         init &&
         (t.isArrowFunctionExpression(init) || t.isFunctionExpression(init))
       ) {
-        if (isReactComponentFunction(init)) {
-          decl.init = wrapFunctionWithPlugins(init, id.name, filename);
-          modified = true;
-        }
+        decl.init = wrapFunctionWithPlugins(init, id.name, filename);
+        modified = true;
       }
     }
 
@@ -284,7 +293,7 @@ const wrapExportedFunctions = (code, filename) => {
       const { node } = declPath;
       const decl = node.declaration;
 
-      if (decl && t.isFunctionDeclaration(decl) && decl.id && isReactComponentFunction(decl)) {
+      if (decl && t.isFunctionDeclaration(decl) && decl.id) {
         const funcName = decl.id.name;
         const wrapped = wrapFunctionWithPlugins(decl, funcName, filename);
 
@@ -301,11 +310,8 @@ const wrapExportedFunctions = (code, filename) => {
     ExportDefaultDeclaration: (declPath) => {
       const decl = declPath.node.declaration;
 
-      if (
-        (t.isArrowFunctionExpression(decl) || t.isFunctionExpression(decl)) &&
-        isReactComponentFunction(decl)
-      ) {
-        const baseName = filename.replace(/\.[jt]sx?$/, '');
+      if (t.isArrowFunctionExpression(decl) || t.isFunctionExpression(decl)) {
+        const baseName = path.basename(filename).replace(/\.[jt]sx?$/, '');
         const funcName = `${baseName}Default`;
         const wrapped = wrapFunctionWithPlugins(decl, funcName, filename, true);
 
@@ -317,11 +323,7 @@ const wrapExportedFunctions = (code, filename) => {
         if (binding && binding.path.isVariableDeclarator()) {
           const init = binding.path.node.init;
 
-          if (
-            init &&
-            (t.isArrowFunctionExpression(init) || t.isFunctionExpression(init)) &&
-            isReactComponentFunction(init)
-          ) {
+          if (init && (t.isArrowFunctionExpression(init) || t.isFunctionExpression(init))) {
             const wrapped = wrapFunctionWithPlugins(init, name, filename, true);
 
             binding.path.get('init').replaceWith(wrapped);
@@ -335,11 +337,19 @@ const wrapExportedFunctions = (code, filename) => {
 };
 
 /**
- * Webpack loader that wraps React components with plugins
+ * Webpack loader that wraps functions with appropriate plugins
  * @param {string} inputCode - Source code to transform
  * @returns {string} Transformed code
  */
 function pluginizerModifier(inputCode) {
+  if (
+    inputCode.search(/['"]use\s*no-plugins['"]\s*;?/) !== -1 ||
+    this.resourcePath.includes('/node_modules/') ||
+    this.resourcePath.includes('/catalyst-pluginizr/')
+  ) {
+    return inputCode;
+  }
+
   return wrapExportedFunctions(inputCode, this.resourcePath);
 }
 

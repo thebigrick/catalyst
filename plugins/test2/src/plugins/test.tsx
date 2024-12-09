@@ -1,14 +1,15 @@
-import { Plugin } from "@thebigrick/catalyst-pluginizr";
+import { PluginFC } from "@thebigrick/catalyst-pluginizr";
 import React from "react";
+import { Header } from "@bigcommerce/catalyst-core/components/header";
 
-const myTestPlugin: Plugin = {
+const myTestPlugin: PluginFC<typeof Header> = {
   name: "My Plugin",
-  component: "@bigcommerce/catalyst-core/components/header:Header",
-  wrap: (Component) => (props) => {
+  component: "@bigcommerce/catalyst-core/app/[locale]/layout",
+  wrap: ({ WrappedComponent, ...props }) => {
     return (
       <div className="plugin-wrapper">
-        <Component {...props} />
-        PLUGIN test 2
+        Layout wrapper
+        <WrappedComponent {...props} />
       </div>
     );
   },

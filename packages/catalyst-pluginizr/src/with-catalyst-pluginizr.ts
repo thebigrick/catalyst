@@ -44,6 +44,9 @@ const withCatalystPluginizr = (nextConfig: NextConfig): NextConfig => {
             './**/*.tsx': {
               loaders: [path.resolve(getSelfRoot(), 'plugin-loader.js')],
             },
+            './**/*.ts': {
+              loaders: [path.resolve(getSelfRoot(), 'plugin-loader.js')],
+            },
           },
         },
       },

@@ -1,12 +1,32 @@
-import { Plugin } from './types';
+import { AnyWrappedFC, AnyWrappedFn, PluginFC, PluginFn } from './types';
 
-const plugins: Record<string, Plugin[]> = {};
+const fcPlugins: Record<string, PluginFC[]> = {};
+const fnPlugins: Record<string, PluginFn[]> = {};
 
-export const register = (plugin: Plugin) => {
-  plugins[plugin.component] ??= [];
-  plugins[plugin.component].push(plugin);
+export const registerFcPlugin = <TSourceComponent extends AnyWrappedFC = AnyWrappedFC>(
+  plugin: PluginFC<TSourceComponent>,
+) => {
+  fcPlugins[plugin.component] ??= [];
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  fcPlugins[plugin.component].push(plugin as PluginFC);
 };
 
-export const getPlugins = (component: string): Plugin[] => {
-  return plugins[component] ?? [];
+export const registerFnPlugin = <TSourceFn extends AnyWrappedFn = AnyWrappedFn>(
+  plugin: PluginFn<TSourceFn>,
+) => {
+  fnPlugins[plugin.functionId] ??= [];
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  fnPlugins[plugin.functionId].push(plugin as PluginFn);
+};
+
+export const getFcPlugins = <TSourceComponent extends AnyWrappedFC>(
+  component: string,
+): Array<PluginFC<TSourceComponent>> => {
+  return fcPlugins[component] ?? [];
+};
+
+export const getFnPlugins = <TSourceFn extends AnyWrappedFn>(
+  functionId: string,
+): Array<PluginFn<TSourceFn>> => {
+  return fnPlugins[functionId] ?? [];
 };
