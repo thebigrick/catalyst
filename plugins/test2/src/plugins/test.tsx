@@ -1,16 +1,18 @@
 import { PluginFC } from "@thebigrick/catalyst-pluginizr";
 import React from "react";
-import { Header } from "@bigcommerce/catalyst-core/components/header";
+import RootLayout from "@bigcommerce/catalyst-core/app/[locale]/layout";
 
-const myTestPlugin: PluginFC<typeof Header> = {
+const myTestPlugin: PluginFC<typeof RootLayout> = {
   name: "My Plugin",
   component: "@bigcommerce/catalyst-core/app/[locale]/layout",
-  wrap: ({ WrappedComponent, ...props }) => {
+  wrap: async ({ WrappedComponent, ...props }) => {
+    const params = await props.params;
+
     return (
-      <div className="plugin-wrapper">
-        Layout wrapper
-        <WrappedComponent {...props} />
-      </div>
+      <WrappedComponent
+        {...props}
+        params={Promise.resolve({ ...params, locale: "it" })}
+      />
     );
   },
 };

@@ -7,9 +7,10 @@ const myTestPlugin: PluginFC<typeof Header> = {
   component: "@bigcommerce/catalyst-core/components/header:Header",
   wrap: ({ WrappedComponent, ...props }) => {
     return (
-      <div className="plugin-wrapper">
-        PLUGIN test 35
+      <div>
+        Lorem Ipsum
         <WrappedComponent {...props} />
+        Ipsum Lorem
       </div>
     );
   },

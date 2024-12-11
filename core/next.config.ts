@@ -1,5 +1,4 @@
 import bundleAnalyzer from '@next/bundle-analyzer';
-import withCatalystPluginizr from '@thebigrick/catalyst-pluginizr/with-catalyst-pluginizr';
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
@@ -7,6 +6,7 @@ import { writeBuildConfig } from './build-config/writer';
 import { client } from './client';
 import { graphql } from './client/graphql';
 import { cspHeader } from './lib/content-security-policy';
+import withCatalystPluginizr from '@thebigrick/catalyst-pluginizr/with-catalyst-pluginizr';
 
 const withNextIntl = createNextIntlPlugin();
 

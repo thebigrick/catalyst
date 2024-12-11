@@ -1,15 +1,22 @@
-import { registerFcPlugin } from "@thebigrick/catalyst-pluginizr";
-import myTestPlugin from "./plugins/test";
 import { registerFnPlugin } from "@thebigrick/catalyst-pluginizr/src/registry";
-import { useCart } from "@bigcommerce/catalyst-core/components/header/cart-provider";
+import { getSearchResults } from "@bigcommerce/catalyst-core/components/header/_actions/get-search-results";
+import { ProductCardFragment } from "@bigcommerce/catalyst-core/components/product-card/fragment";
 
-registerFcPlugin(myTestPlugin);
-registerFnPlugin<typeof useCart>({
-  name: "My Function Plugin",
+registerFnPlugin<typeof getSearchResults>({
+  name: "Get Serach Results",
   functionId:
-    "@bigcommerce/catalyst-core/components/header/cart-provider:useCart",
-  wrap: (fn) => {
-    console.log("Function Plugin");
-    return fn();
+    "@bigcommerce/catalyst-core/components/header/_actions/get-search-results:getSearchResults",
+  wrap: (fn, searchTerm) => {
+    return fn("casa");
+  },
+});
+
+registerFnPlugin<typeof ProductCardFragment>({
+  name: "Product Card Fragment",
+  functionId:
+    "@bigcommerce/catalyst-core/components/product-card/fragment:ProductCardFragment",
+  wrap: (arg) => {
+    console.log("Product Card Fragment", arg);
+    return arg;
   },
 });
