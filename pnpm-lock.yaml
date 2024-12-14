@@ -284,6 +284,9 @@ importers:
       chokidar:
         specifier: ^4.0.1
         version: 4.0.1
+      eslint:
+        specifier: ^8.57.1
+        version: 8.57.1
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@20.17.6)
