@@ -7,6 +7,9 @@
   "scripts": {
     "build": "npx tsx src/scripts/setup.ts",
     "dev": "npx tsx src/scripts/run-dev.ts",
+    "clean": "npx tsx src/scripts/clean.ts",
+    "test": "jest",
+    "lint": "eslint . --ext .ts,.tsx,.js,.cjs --max-warnings 0",
     "typecheck": "tsc --noEmit"
   },
   "author": "Riccardo Tempesta <riccardo.tempesta@bigcommerce.com>",
@@ -16,6 +19,8 @@
     "next": "^15.0.3"
   },
   "devDependencies": {
+    "eslint": "^8.57.1",
+    "jest": "^29.7.0",
     "chokidar": "^4.0.1",
     "@types/node": "^20.17.6",
     "@types/react": "^18.3.12",

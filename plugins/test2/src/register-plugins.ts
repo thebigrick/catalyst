@@ -16,7 +16,6 @@ registerFnPlugin<typeof ProductCardFragment>({
   functionId:
     "@bigcommerce/catalyst-core/components/product-card/fragment:ProductCardFragment",
   wrap: (arg) => {
-    console.log("Product Card Fragment", arg);
     return arg;
   },
 });

@@ -13,6 +13,7 @@ const config = {
     '@bigcommerce/catalyst/prettier',
   ],
   rules: {
+    'no-console': 'off',
     '@typescript-eslint/naming-convention': 'off',
     '@typescript-eslint/no-empty-object-type': 'off',
     '@next/next/no-html-link-for-pages': 'off',
@@ -58,6 +59,8 @@ const config = {
     'playwright-report/**',
     'test-results/**',
     '**/google_analytics4.js',
+    '*.test.js',
+    'plugins.ts',
   ],
 };
 
