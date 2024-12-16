@@ -1,9 +1,10 @@
+const withPluginizrTailwind = require('@thebigrick/catalyst-pluginizr/pluginizr/with-pluginizr-tailwind');
+
 /** @type {import('tailwindcss').Config} */
 const config = {
   content: [
     './app/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
-    '../plugins/**/*.{ts,tsx}',
     '!./node_modules/**', // Exclude everything in node_modules to speed up builds
   ],
   theme: {
@@ -59,4 +60,4 @@ const config = {
   ],
 };
 
-module.exports = config;
+module.exports = withPluginizrTailwind(config);

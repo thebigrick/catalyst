@@ -84,17 +84,16 @@ Just a Catalyst-based project (see [Catalyst on Github](https://github.com/bigco
    //...
    ```
 
-5. Add the plugins folder to tailwind config in `core/tailwind.config.js`:
+5. Configure tailwind to use pluginizr in `core/tailwind.config.js`:
 
    ```javascript
-   // ...
-   const config = {
-     content: [
-       // ...
-       '../plugins/**/*.{ts,tsx}', // <-- Add this line inside "content" array
-       // ...
-     ],
-     // ...
+   // Add the following line at the beginning of the file
+   const withPluginizrTailwind = require('@thebigrick/catalyst-pluginizr/pluginizr/with-pluginizr-tailwind');
+   
+   // ... (leave the main content as is)
+   
+   // Replace the default module.exports line at the end with the following:
+   module.exports = withPluginizrTailwind(config);
    ```
 
 6. Install dependencies:
