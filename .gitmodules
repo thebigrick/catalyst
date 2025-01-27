@@ -1,0 +1,6 @@
+[submodule "packages/catalyst-pluginizr"]
+	path = packages/catalyst-pluginizr
+	url = https://github.com/thebigrick/catalyst-pluginizr.git
+[submodule "plugins/catalyst-payloadcms"]
+	path = plugins/catalyst-payloadcms
+	url = https://github.com/thebigrick/catalyst-payloadcms.git

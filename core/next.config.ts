@@ -1,3 +1,4 @@
+import withCatalystPluginizr from '@thebigrick/catalyst-pluginizr/with-catalyst-pluginizr';
 import bundleAnalyzer from '@next/bundle-analyzer';
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
@@ -58,7 +59,7 @@ export default async (): Promise<NextConfig> => {
   };
 
   // Apply withNextIntl to the config
-  nextConfig = withNextIntl(nextConfig);
+  nextConfig = withCatalystPluginizr(withNextIntl(nextConfig));
 
   if (process.env.ANALYZE === 'true') {
     const withBundleAnalyzer = bundleAnalyzer();

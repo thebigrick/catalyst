@@ -1,3 +1,4 @@
+const withTailwindPluginizr = require('@thebigrick/catalyst-pluginizr/with-tailwind-pluginizr');
 /** @type {import('tailwindcss').Config} */
 const config = {
   content: [
@@ -58,4 +59,4 @@ const config = {
   ],
 };
 
-module.exports = config;
+module.exports = withTailwindPluginizr(config);
